@@ -22,20 +22,6 @@
     Array.new(size) { Array.new(size) { ["Yes", "No", "Maybe"].sample } }
   end
 
-# 4. Using the bookingbug API, find the list of services for company where the company_id=114784. Inside the JSON response will be a list of services. Print names of the last two services returned in response. 
-
-# To sign up for the API go to: 
-# https://dev.bookingbug.com 
-
-# Once signed in and verified, your app keys and app-id will be on: 
-# https://dev.bookingbug.com/admin/access_details 
-
-# The documentation for the Service API call is here: 
-# https://dev.bookingbug.com/rest_api 
-# under the label; Service List 
-# there shouldn't be any need to use the login API as the intention is that you use the public service API
-
-
 # 5. Write a SQL query to calculate the number of goals for each team. 
 
 players 
