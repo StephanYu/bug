@@ -1,9 +1,7 @@
 // 1. Define a function that deletes all elements of the array a = [4,7,8,'x'] that are not numbers between 6 and 9. 
-//   Assumptions: 
-//     number elements contained in array are integers and whole numbers only
-array = [4, 5, 7, 8, 10, 'x'];
+// Assumptions: number elements contained in array are integers and whole numbers only
 
-function removeValue(array) {
+function removeElement(array) {
   for(var i = 0; i < array.length; i++) {
     if(array[i] < 6 || array[i] > 9 || isNaN(array[i]) == true ) {
       array.splice(i, 1);
@@ -13,63 +11,43 @@ function removeValue(array) {
   return array;
 }
 // 2. Define a function that prints all permutations of an array. 
-function printPermutations(array) {
+function permutationsOf(array) { 
+  var perm_array = []; 
 
-}
-
-// Option 1
-function permutator(inputArr) {
-  var results = [];
-
-  function permute(arr, memo) {
-    var cur, memo = memo || [];
-
-    for (var i = 0; i < arr.length; i++) {
-      cur = arr.splice(i, 1);
-      if (arr.length === 0) {
-        results.push(memo.concat(cur));
-      }
-      permute(arr.slice(), memo.concat(cur));
-      arr.splice(i, 0, cur[0]);
-    }
-
-    return results;
+  function swap(a, b) {
+    var temp = array[a];
+    array[a] = array[b];
+    array[b] = temp;
   }
 
-  return permute(inputArr);
-}
-
-// Option 2
-function permute(input) {
-  var permArr = [];
-  var usedChars = [];
-
-  return (function main() {
-    for (var i = 0; i < input.length; i++) {
-      var ch = input.splice(i, 1)[0];
-      usedChars.push(ch);
-
-      if (input.length == 0) {
-        permArr.push(usedChars.slice());
+  function generate(n) {
+    if (n == 1) {
+      perm_array.push(array.join());
+    } else {
+      for (var i = 0; i < n; i++) {
+        generate(n - 1);
+        swap(n % 2 ? 0 : i, n - 1);
       }
-      main();
-      input.splice(i, 0, ch);
-      usedChars.pop();
     }
-    return permArr;
-  })();
-}
+  }
+
+  generate(array.length);
+  return perm_array;
+}    
+
+
 // 3. Define a function that creates a 5 x 5 array and randomly fills each cell with "Yes", "No" or "Maybe". 
 
 function createRandomArray(rows, cols){
   var arr = [];
   var answers = ['Yes', 'No', 'Maybe']; 
+
   function randomAnswer() {
     return answers[Math.floor(Math.random() * answers.length)];
   }; 
  
   for(var i = 0; i < rows; i++){
-    arr.push( new Array(cols));
+    arr.push(new Array(cols));
 
     for(var j = 0; j < cols; j++){
       arr[i][j] = randomAnswer();
@@ -78,61 +56,23 @@ function createRandomArray(rows, cols){
   return arr;
 }
 
-// 4. 
-// Synchronous HTTP GET Request using XMLHttpRequest API
-
-var url = "https://www.bookingbug.com/api/v1/114784/services?page=1&per_page=300";
-
-var client = new XMLHttpRequest();
-client.open("GET", url, false);
-client.setRequestHeader("Content-Type", "text/plain");
-
-client.onreadystatechange = function() {
-  if (client.readyState == 4 && client.status == 200) {
-    console.log("Request successful!\n The response status is: " + client.status + ".");
-    var myObj = eval ( client.responseText );
-    console.log(myObj);
-  } else {
-    console.log("The request did not succeed!\n\nThe response status was: " + client.status + " " + client.statusText + ".");
-  }
-};
-
-client.send();
-
 //  4. Using the bookingbug API, find the list of services for company where the company_id=114784. Inside the JSON response will be a list of services. Print names of the last two services returned in response. 
 
-//  To sign up for the API go to: 
-//  https://dev.bookingbug.com 
-
-//  Once signed in and verified, your app keys and app-id will be on: https://dev.bookingbug.com/admin/access_details 
-
-//  The documentation for the Service API call is here: 
-//  https://dev.bookingbug.com/rest_api 
-//  under the label; Service List 
-//  there shouldn't be any need to use the login API as the intention is that you use the public service API
-
-// "App-Id:9c0bf9d1"
-// "App-Key:12e5ba26ece8cbfd5336d57147b9219c"
-
-// Asynchronous HTTP GET Request using jQuery $.ajax
-
 $.ajax({
-   url: "https://www.bookingbug.com/api/v1/114784/services?page=1&per_page=300",
-   data: {
-      format: 'json',
-      App-Id: '9c0bf9d1',
-      App-Key: '12e5ba26ece8cbfd5336d57147b9219c'
-   },
-   dataType: 'jsonp',
-   success: function(data) {
-      console.log(data);
-      // console.log(data[_embedded][services][-2]);
-   },
-   error: function() {
-      console.log("An error has occurred");
-   }
+  url: "https://www.bookingbug.com/api/v1/114784/services?page=1&per_page=300",
+  beforeSend: function(xhr) {
+    xhr.setRequestHeader('App-Id', '9c0bf9d1');
+    xhr.setRequestHeader('App-Key', '12e5ba26ece8cbfd5336d57147b9219c');
+  },
+  success: function(data) {
+    console.log(data._embedded.services[data.total_entries-2].name);
+    console.log(data._embedded.services[data.total_entries-1].name);
+    // console.log(data);
+  },
+  error: function() {
+    console.log("An error has occurred");
+  }
 });
-
 
   
 

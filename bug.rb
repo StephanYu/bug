@@ -42,7 +42,7 @@ FROM teams, players
 WHERE teams.id = players.team_id
 GROUP BY Teams.name;
 
-# Expected Outcome:
+# Outcome:
 
 goals
 id  team          goals
